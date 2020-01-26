@@ -1,0 +1,5 @@
+button, table {margin: 10px;}
+.delete {width: 100px;}
+#delete {margin: 2px;}
+td:hover {cursor: pointer;}
+table, .form-inline {width: 540px;}
