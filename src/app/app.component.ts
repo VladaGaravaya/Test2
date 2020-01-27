@@ -35,29 +35,26 @@ export class AppComponent {
         let items: object[];
         try {
             items = JSON.parse(json);
-            
-            items.forEach((element: any) => {
-                if(typeof col === "undefined") {
-                    col = Object.keys(element);   
-                }
-                if(JSON.stringify(col) != JSON.stringify(Object.keys(element))){
-                    error  = true;
-                }
-                Object.values(element).forEach(val => {
-                    if(typeof val !== "string") error = true;
-                })
-            });
-            if(error) {
-                alert("Input uncorrect JSON.");
-            } 
-            else {
-                return true;
+            if(items.length !== 0) {
+                items.forEach((element: object) => {
+                    if(typeof col === "undefined") {
+                        col = Object.keys(element);   
+                    }
+                    if(JSON.stringify(col) !== JSON.stringify(Object.keys(element))){
+                        error  = true;
+                    }
+                    Object.values(element).forEach(val => {
+                        if(typeof val !== "string") error = true;
+                    })
+                });
             }
-        }
-        catch {
+            else error = true;
+        } catch {
             alert("Input uncorrect string.");
             return false;
         }
+        if(error) alert("Input uncorrect JSON.");
+        else return true;
     }
 
     unloading() {
