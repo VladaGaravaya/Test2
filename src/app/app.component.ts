@@ -22,19 +22,21 @@ export class AppComponent {
 
     loading(data: string) {
 
-        let correctJson = data.replace(/(['"])?([a-z0-9A-Z_]+)(['"])?:/g, '"$2": ');
-        if(this.validation(correctJson)) {
-            this.items = JSON.parse(correctJson);
+        
+        if(this.validation(data)) {
+            this.items = JSON.parse(data.replace(/(['"])?([a-z0-9A-Z_]+)(['"])?:/g, '"$2": '));
             this.columns = Object.keys(this.items[0]);  
         }
     }
  
     validation(json: string): boolean {
+        let correctJson: string;
         let col: string[];
-        let error: boolean;
+        let error: boolean = false;
         let items: object[];
         try {
-            items = JSON.parse(json);
+            correctJson = json.replace(/(['"])?([a-z0-9A-Z_]+)(['"])?:/g, '"$2": ');
+            items = JSON.parse(correctJson);
             if(items.length !== 0) {
                 items.forEach((element: object) => {
                     if(typeof col === "undefined") {
