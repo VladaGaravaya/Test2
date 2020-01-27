@@ -20,67 +20,32 @@ export class AppComponent {
     items: object[];
     columns: string[];
 
-    addItem(): void {
-
-        let newItem: object = {};
-         
-        this.columns.forEach(col => {
-            let newData = prompt(`Input ${col}`);
-            newItem[col] = newData;
-        });
-
-        this.items.push(newItem);
-    }
-
-    deleteItem(item: object): void {
-
-        let index;
-
-        this.items.forEach(element => {
-            if(JSON.stringify(element)===JSON.stringify(item)) {
-                index = this.items.indexOf(element);
-            }
-        });
-
-        this.items.splice(index, 1);
-    }
-
-    changeItem(item: object, col: string): void {
-        
-        this.items.forEach(element => {
-            if(JSON.stringify(element)===JSON.stringify(item)) {
-                let newData = prompt(`Input new ${col}.`);
-                if(newData !=="" || newData.trim() !=="") {
-                    element[col] = newData;
-                }
-                else {
-                    alert("Error. Input data again.");
-                }
-            }
-        });
-    }
-
     loading(data: string) {
 
         let correctJson = data.replace(/(['"])?([a-z0-9A-Z_]+)(['"])?:/g, '"$2": ');
-        let items = JSON.parse(correctJson);
-        let col: string[];
-        let error: boolean;
+        try {
+            let items = JSON.parse(correctJson);
+            let col: string[];
+                    let error: boolean;
 
-        items.forEach((element: any) => {
-            if(typeof col === "undefined") {
-                col = Object.keys(element);   
-            }
-            if(JSON.stringify(col) != JSON.stringify(Object.keys(element))){
-                alert("Input uncorrect JSON.");
-                error  = true;
-            }
-        });
+                    items.forEach((element: any) => {
+                        if(typeof col === "undefined") {
+                            col = Object.keys(element);   
+                        }
+                        if(JSON.stringify(col) != JSON.stringify(Object.keys(element))){
+                            alert("Input uncorrect JSON.");
+                            error  = true;
+                        }
+                    });
 
-        if(!error) {
-            this.columns = col;
-            this.items = items;
+            if(!error) {
+                this.columns = col;
+                this.items = items;
+            }
         }
+        catch(e) {
+            alert(e);
+        }  
     }
 
     unloading() {
