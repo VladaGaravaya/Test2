@@ -23,29 +23,41 @@ export class AppComponent {
     loading(data: string) {
 
         let correctJson = data.replace(/(['"])?([a-z0-9A-Z_]+)(['"])?:/g, '"$2": ');
+        if(this.validation(correctJson)) {
+            this.items = JSON.parse(correctJson);
+            this.columns = Object.keys(this.items[0]);  
+        }
+    }
+ 
+    validation(json: string): boolean {
+        let col: string[];
+        let error: boolean;
+        let items: object[];
         try {
-            let items = JSON.parse(correctJson);
-            let col: string[];
-                    let error: boolean;
-
-                    items.forEach((element: any) => {
-                        if(typeof col === "undefined") {
-                            col = Object.keys(element);   
-                        }
-                        if(JSON.stringify(col) != JSON.stringify(Object.keys(element))){
-                            alert("Input uncorrect JSON.");
-                            error  = true;
-                        }
-                    });
-
-            if(!error) {
-                this.columns = col;
-                this.items = items;
+            items = JSON.parse(json);
+            
+            items.forEach((element: any) => {
+                if(typeof col === "undefined") {
+                    col = Object.keys(element);   
+                }
+                if(JSON.stringify(col) != JSON.stringify(Object.keys(element))){
+                    error  = true;
+                }
+                Object.values(element).forEach(val => {
+                    if(typeof val !== "string") error = true;
+                })
+            });
+            if(error) {
+                alert("Input uncorrect JSON.");
+            } 
+            else {
+                return true;
             }
         }
-        catch(e) {
-            alert(e);
-        }  
+        catch {
+            alert("Input uncorrect string.");
+            return false;
+        }
     }
 
     unloading() {
