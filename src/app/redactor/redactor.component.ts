@@ -41,12 +41,13 @@ export class Redactor {
         this.items.forEach(element => {
             if(JSON.stringify(element)===JSON.stringify(item)) {
                 let newData = prompt(`Input new ${col}.`);
-                if(newData !=="" || newData.trim() !=="") {
-                    element[col] = newData;
-                }
-                else {
+                while(newData.replace(/\s/g, '') === "") {
+
                     alert("Error. Input data again.");
+                    newData = prompt(`Input new ${col}.`);
+                    
                 }
+                if(newData !== null) element[col] = newData;
             }
         });
     }
